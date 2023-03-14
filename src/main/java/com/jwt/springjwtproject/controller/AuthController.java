@@ -5,34 +5,40 @@ import com.jwt.springjwtproject.repository.UserInfoRepository;
 import com.jwt.springjwtproject.security.JwtAuthRequest;
 import com.jwt.springjwtproject.security.JwtAuthResponse;
 import com.jwt.springjwtproject.security.JwtTokenHelper;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class AuthController {
 
-    @Autowired
-    private JwtTokenHelper jwtTokenHelper;
-    @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final JwtTokenHelper jwtTokenHelper;
+    private final UserDetailsService userDetailsService;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
+    private final UserInfoRepository userInfoRepository;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    public AuthController(JwtTokenHelper jwtTokenHelper, UserDetailsService userDetailsService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, UserInfoRepository userInfoRepository) {
+        this.jwtTokenHelper = jwtTokenHelper;
+        this.userDetailsService = userDetailsService;
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
+        this.userInfoRepository = userInfoRepository;
+    }
 
-    @Autowired
-    private UserInfoRepository userInfoRepository;
     @PostMapping("/login")
     public JwtAuthResponse createToken(@RequestBody JwtAuthRequest jwtAuthRequest){
         this.authenticate(jwtAuthRequest.getUserName(),jwtAuthRequest.getPassword());
@@ -59,5 +65,12 @@ public class AuthController {
         userInfoRepository.save(userInfo);
 
         return "User Added Successfully...";
+    }
+
+
+    @GetMapping("/user")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public List<UserInfo> getAllUsers(){
+        return userInfoRepository.findAll();
     }
 }

@@ -18,10 +18,10 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private UserDetailsService userDetailsService;
-
+    private  UserDetailsService userDetailsService;
     @Autowired
-    private JwtTokenHelper jwtTokenHelper;
+    private  JwtTokenHelper jwtTokenHelper;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 //        Validate Token
 
-        if(username!=null&& SecurityContextHolder.getContext().getAuthentication()==null){
+        if(username!=null && SecurityContextHolder.getContext().getAuthentication()==null){
 
             UserDetails userDetails=this.userDetailsService.loadUserByUsername(username);
             System.out.println("Validated User:="+userDetails.getUsername()+userDetails.getPassword());

@@ -13,8 +13,12 @@ import java.util.List;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    @Autowired
-    private EmployeeService employeeService;
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+//    @Autowired
+    private final EmployeeService employeeService;
     @PostMapping("/")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public Employee addEmployee(@RequestBody Employee employee){
