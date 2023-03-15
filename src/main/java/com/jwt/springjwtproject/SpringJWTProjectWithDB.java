@@ -8,7 +8,7 @@ public class SpringJWTProjectWithDB {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringJWTProjectWithDB.class, args);
-		System.out.println("Hello");
+		System.out.println("Hello, All Working Fine....");
 	}
 
 }

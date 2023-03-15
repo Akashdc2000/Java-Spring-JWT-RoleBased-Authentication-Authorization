@@ -8,13 +8,10 @@ import java.util.List;
 
 @Repository
 public interface EmployeesRepository extends MongoRepository<Employee,String> {
-
-    public List<Employee> findByName(String name);
-    public List<Employee> findByDept(String dept);
-
-    public List<Employee> findByDeptAndSalary(String dept,int salary);
-
-    public List<Employee> findByDeptAndSalaryGreaterThan(String dept,int salary);
+     List<Employee> findByName(String name);
+     List<Employee> findByDept(String dept);
+     List<Employee> findByDeptAndSalary(String dept,int salary);
+    List<Employee> findByDeptAndSalaryGreaterThan(String dept,int salary);
 
 
 }
